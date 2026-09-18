@@ -33,13 +33,45 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Workout = exports.Team = exports.Activity = exports.User = void 0;
+exports.Workout = exports.Leaderboard = exports.Team = exports.Activity = exports.User = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
-const userSchema = new mongoose_1.Schema({ name: { type: String, required: true }, email: { type: String, required: true, unique: true }, role: { type: String, enum: ['student', 'teacher'], default: 'student' }, avatar: { type: String, default: '' }, goal: { type: String, default: 'Build a consistent fitness habit' } }, { timestamps: true });
-const activitySchema = new mongoose_1.Schema({ userId: { type: mongoose_1.Schema.Types.ObjectId, ref: 'User', required: true }, type: { type: String, required: true }, duration: { type: Number, required: true, min: 1 }, calories: { type: Number, required: true, min: 0 }, date: { type: Date, default: Date.now } }, { timestamps: true });
-const teamSchema = new mongoose_1.Schema({ name: { type: String, required: true }, color: { type: String, default: '#f3b562' }, members: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'User' }], target: { type: Number, default: 1000 } }, { timestamps: true });
-const workoutSchema = new mongoose_1.Schema({ title: { type: String, required: true }, focus: { type: String, required: true }, level: { type: String, enum: ['starter', 'steady', 'challenge'], default: 'steady' }, duration: { type: Number, required: true }, exercises: [{ type: String }] }, { timestamps: true });
+const userSchema = new mongoose_1.Schema({
+    name: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    role: { type: String, enum: ['student', 'teacher'], default: 'student' },
+    avatar: { type: String, default: '' },
+    goal: { type: String, default: 'Build a consistent fitness habit' }
+}, { timestamps: true });
+const activitySchema = new mongoose_1.Schema({
+    userId: { type: mongoose_1.Schema.Types.ObjectId, ref: 'User', required: true },
+    type: { type: String, required: true },
+    duration: { type: Number, required: true, min: 1 },
+    calories: { type: Number, required: true, min: 0 },
+    date: { type: Date, default: Date.now }
+}, { timestamps: true });
+const teamSchema = new mongoose_1.Schema({
+    name: { type: String, required: true },
+    color: { type: String, default: '#f3b562' },
+    members: [{ type: mongoose_1.Schema.Types.ObjectId, ref: 'User' }],
+    target: { type: Number, default: 1000 }
+}, { timestamps: true });
+const leaderboardSchema = new mongoose_1.Schema({
+    userId: { type: mongoose_1.Schema.Types.ObjectId, ref: 'User', required: true },
+    name: { type: String, required: true },
+    role: { type: String, enum: ['student', 'teacher'], default: 'student' },
+    minutes: { type: Number, default: 0 },
+    score: { type: Number, default: 0 },
+    sessions: { type: Number, default: 0 }
+}, { timestamps: true });
+const workoutSchema = new mongoose_1.Schema({
+    title: { type: String, required: true },
+    focus: { type: String, required: true },
+    level: { type: String, enum: ['starter', 'steady', 'challenge'], default: 'steady' },
+    duration: { type: Number, required: true },
+    exercises: [{ type: String }]
+}, { timestamps: true });
 exports.User = mongoose_1.default.models.User || mongoose_1.default.model('User', userSchema);
 exports.Activity = mongoose_1.default.models.Activity || mongoose_1.default.model('Activity', activitySchema);
 exports.Team = mongoose_1.default.models.Team || mongoose_1.default.model('Team', teamSchema);
+exports.Leaderboard = mongoose_1.default.models.Leaderboard || mongoose_1.default.model('Leaderboard', leaderboardSchema);
 exports.Workout = mongoose_1.default.models.Workout || mongoose_1.default.model('Workout', workoutSchema);
